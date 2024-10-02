@@ -82,16 +82,16 @@
 
 ```shell
 # clone this repo
-git clone https://github.com/jimmycv07/DiffIR2VR-Zero.git
-cd DiffIR2VR-Zero
+git clone https://github.com/koi953215/NaRCan.git
+cd NaRCan
 
 # create environment
-conda create -n diffir2vr python=3.10
-conda activate diffir2vr
+conda create -n narcan python=3.10
+conda activate narcan
 pip install -r requirements.txt
 ```
 
-## <a name="pretrained_weights"></a>Pretrained Weights
+## <a name="Preprocessing"></a>Preprocessing for the [Realfill](https://github.com/thuanz123/realfill)
 
 Please place the pretrained weights like the following folder structure. **You will need to download the [GMFlow](https://github.com/haofeixu/gmflow) weights manually; the rest will be downloaded automatically during inference.**
 
@@ -169,9 +169,9 @@ python -u inference.py \
 Please cite us if our work is useful for your research.
 
 ```
-@article{yeh2024diffir2vr,
-    title={DiffIR2VR-Zero: Zero-Shot Video Restoration with Diffusion-based Image Restoration Models},
-    author={Chang-Han Yeh and Chin-Yang Lin and Zhixiang Wang and Chi-Wei Hsiao and Ting-Hsuan Chen and Yu-Lun Liu},
+@article{chen2024narcan,
+    title={NaRCan: Natural Refined Canonical Image with Integration of Diffusion Prior for Video Editing},
+    author={Ting-Hsuan Chen and Jiewen Chan and Hau-Shiang Shiu and Shih-Han Yen and Chang-Han Yeh and Yu-Lun Liu},
     journal={arXiv},
     year={2024}
 }
@@ -183,8 +183,8 @@ This project is released under the [Apache 2.0 license](LICENSE). -->
 
 ## Acknowledgement
 
-This project is based on [DiffBIR](https://github.com/XPixelGroup/DiffBIR) and [VidToMe](https://github.com/lixirui142/VidToMe). Thanks for their awesome work.
+This research was funded by the National Science and Technology Council, Taiwan, under Grants NSTC 112-2222-E-A49-004-MY2. The authors are grateful to Google, NVIDIA, and MediaTek Inc. for generous donations. Yu-Lun Liu acknowledges the Yushan Young Fellow Program by the MOE in Taiwan.
 
 <!-- ## Contact
 
-If you have any questions, please feel free to contact with me at linxinqi23@mails.ucas.ac.cn. -->
+If you have any questions, please feel free to contact with me at tchen783@usc.edu -->
