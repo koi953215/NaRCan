@@ -81,6 +81,10 @@ bash train.sh
 ```
 
 
+## <a name="Train"></a>Train a new model
+
+
+
 ## <a name="inference"></a>Inference
 
 We provide some examples of inference commands; for additional arguments, please refer to [inference.py](inference.py).
@@ -139,7 +143,7 @@ This project is released under the [Apache 2.0 license](LICENSE). -->
 
 ## Acknowledgement
 
-This research was funded by the National Science and Technology Council, Taiwan, under Grants NSTC 112-2222-E-A49-004-MY2. The authors are grateful to Google, NVIDIA, and MediaTek Inc. for generous donations. Yu-Lun Liu acknowledges the Yushan Young Fellow Program by the MOE in Taiwan.
+This research was funded by the [National Science and Technology Council](https://www.nstc.gov.tw/?l=en), Taiwan, under Grants NSTC 112-2222-E-A49-004-MY2. The authors are grateful to [Google](https://about.google/), [NVIDIA](https://www.nvidia.com/en-us/), and [MediaTek Inc](https://www.mediatek.com/). for generous donations. Yu-Lun Liu acknowledges the Yushan Young Fellow Program by the MOE in Taiwan.
 
 <!-- ## Contact
 
