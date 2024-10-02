@@ -52,7 +52,8 @@ First, switch to the RealFill folder.
 cd realfill
 ```
 
-Uniformly sample 5~10 frames from your dataset (scene) and place them in the `ref` folder. Next, put any single frame in the `target` folder and name it `target.png`(in practice, it's usually the middle frame).
+Uniformly sample 5~10 frames from your dataset (scene) and place them in the `ref` folder. Next, put any single frame in the `target` folder and name it `target.png` (in practice, it's usually the middle frame).
+
 **Note: please organize your dataset using the following folder structure.**
 
 ```
