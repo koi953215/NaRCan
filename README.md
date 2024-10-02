@@ -66,28 +66,11 @@ data
          └─── mask.png
 ```
 
-Open `scripts/train.sh` and make the following modifications
+Open `scripts/train.sh` and make the following modifications.
 
 ```
-export MODEL_NAME="stabilityai/stable-diffusion-2-inpainting"
 export TRAIN_DIR="data/<your-scene-name>"
 export OUTPUT_DIR="<your-scene-name>-model"
-
-accelerate launch train_realfill.py \
-  --pretrained_model_name_or_path=$MODEL_NAME \
-  --train_data_dir=$TRAIN_DIR \
-  --output_dir=$OUTPUT_DIR \
-  --resolution=512 \
-  --train_batch_size=8 \
-  --gradient_accumulation_steps=1 \
-  --unet_learning_rate=2e-4 \
-  --text_encoder_learning_rate=4e-5 \
-  --lr_scheduler="constant" \
-  --lr_warmup_steps=100 \
-  --max_train_steps=2000 \
-  --lora_rank=8 \
-  --lora_dropout=0.1 \
-  --lora_alpha=16 \
 ```
 
 After completing the above steps, we can begin fine-tuning our model. **(Fine-tuning requires a large amount of GPU memory. If your GPU has limited memory, please refer to the [RealFill GitHub](https://github.com/thuanz123/realfill), which provides detailed instructions on how to train on a low-memory GPU.)**
