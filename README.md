@@ -36,9 +36,9 @@ conda activate narcan
 pip install -r requirements.txt
 ```
 
-## <a name="Preprocessing"></a>Preprocessing
+## <a name="Preprocessing"></a>Preprocessing (LoRA Fine-tuning)
 
-Now we need to use [RealFill](https://realfill.github.io/) to train our diffusion model, which is the diffusion prior in the pipeline. **(You can visit this [repo](https://github.com/thuanz123/realfill) for more details about the RealFill environment and operations.)**
+Now, we need to use a technique similar to [RealFill](https://realfill.github.io/) to finetune the diffusion model, which is the diffusion prior in our pipeline. **(You can visit this [repo](https://github.com/thuanz123/realfill) for more details about the RealFill environment and operations.)**
 
 <!-- | Model Name | Description | HuggingFace | BaiduNetdisk | OpenXLab |
 | :---------: | :----------: | :----------: | :----------: | :----------: |
@@ -52,13 +52,13 @@ First, switch to the RealFill folder.
 cd realfill
 ```
 
-Uniformly sample 5~10 frames from your dataset (scene) and place them in the `ref` folder. Next, put any single frame in the `target` folder and name it `target.png` (in practice, it's usually the middle frame).
+Uniformly sample 5~10 frames from your dataset (scene) and place them in the `ref` folder. Next, put any single frame in the `target` folder and name it `target.png` (in practice, select the middle frame of your scene).
 
 **Note: please organize your dataset using the following folder structure.**
 
 ```
 data
-└─── <your-dataset-name>
+└─── <your-scene-name>
     ├─── ref
     │    └─── [any number of images]
     └─── target
@@ -66,22 +66,37 @@ data
          └─── mask.png
 ```
 
-<!-- ## <a name="quick_start"></a>:flight_departure:Quick Start
+Open `scripts/train.sh` and make the following modifications
 
-Download [general_full_v1.ckpt](https://huggingface.co/lxq007/DiffBIR/resolve/main/general_full_v1.ckpt) and [general_swinir_v1.ckpt](https://huggingface.co/lxq007/DiffBIR/resolve/main/general_swinir_v1.ckpt) to `weights/`, then run the following command to interact with the gradio website.
+```
+export MODEL_NAME="stabilityai/stable-diffusion-2-inpainting"
+export TRAIN_DIR="data/<your-scene-name>"
+export OUTPUT_DIR="<your-scene-name>-model"
 
-```shell
-python gradio_diffbir.py \
---ckpt weights/general_full_v1.ckpt \
---config configs/model/cldm.yaml \
---reload_swinir \
---swinir_ckpt weights/general_swinir_v1.ckpt \
---device cuda
+accelerate launch train_realfill.py \
+  --pretrained_model_name_or_path=$MODEL_NAME \
+  --train_data_dir=$TRAIN_DIR \
+  --output_dir=$OUTPUT_DIR \
+  --resolution=512 \
+  --train_batch_size=8 \
+  --gradient_accumulation_steps=1 \
+  --unet_learning_rate=2e-4 \
+  --text_encoder_learning_rate=4e-5 \
+  --lr_scheduler="constant" \
+  --lr_warmup_steps=100 \
+  --max_train_steps=2000 \
+  --lora_rank=8 \
+  --lora_dropout=0.1 \
+  --lora_alpha=16 \
 ```
 
-<div align="center">
-    <kbd><img src="assets/gradio.png"></img></kbd>
-</div> -->
+After completing the above steps, we can begin fine-tuning our model. **(Fine-tuning requires a large amount of GPU memory. If your GPU has limited memory, please refer to the [RealFill GitHub](https://github.com/thuanz123/realfill), which provides detailed instructions on how to train on a low-memory GPU.)**
+
+```
+cd scripts
+bash train.sh
+```
+
 
 ## <a name="inference"></a>Inference
 
