@@ -69,8 +69,8 @@ data
 Open `scripts/train.sh` and make the following modifications.
 
 ```
-export TRAIN_DIR="data/<your-scene-name>"
-export OUTPUT_DIR="<your-scene-name>-model"
+export TRAIN_DIR="../data/<your-scene-name>"
+export OUTPUT_DIR="../pth_file/<your-scene-name>-model"
 ```
 
 After completing the above steps, we can begin fine-tuning our model. **(Fine-tuning requires a large amount of GPU memory. If your GPU has limited memory, please refer to the [RealFill GitHub](https://github.com/thuanz123/realfill), which provides detailed instructions on how to train on a low-memory GPU.)**
