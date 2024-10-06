@@ -7,13 +7,15 @@ from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
 
 
-def get_mgrid(sidelen, vmin=-1, vmax=1):
+def get_mgrid(sidelen, vmin=-1, vmax=1, t_crop=None):
     if type(vmin) is not list:
         vmin = [vmin for _ in range(len(sidelen))]
     if type(vmax) is not list:
         vmax = [vmax for _ in range(len(sidelen))]
     tensors = tuple([torch.linspace(vmin[i], vmax[i], steps=sidelen[i]) for i in range(len(sidelen))])
     mgrid = torch.stack(torch.meshgrid(*tensors), dim=-1)
+    if t_crop != None:
+        mgrid = mgrid[:, :, t_crop[0]:t_crop[-1] + 1, :]
     mgrid = mgrid.reshape(-1, len(sidelen))
     return mgrid
 
@@ -47,7 +49,7 @@ def overlap_mix(img1, img2, img_order, overlap_num):
 
 
 class VideoFitting(Dataset):
-    def __init__(self, path, transform=None):
+    def __init__(self, path, transform=None, train_homography=False):
         super().__init__()
 
         self.path = path
@@ -57,9 +59,20 @@ class VideoFitting(Dataset):
             self.transform = transform
 
         self.video = self.get_video_tensor()
-        self.num_frames, _, self.H, self.W = self.video.size()
+        _, _, self.H, self.W = self.video.size()
+        scene_name = path.split('/')[1]
+        self.num_frames = len(os.listdir("data/%s/%s_all"%(scene_name, scene_name)))
         self.pixels = self.video.permute(2, 3, 0, 1).contiguous().view(-1, 3)
-        self.coords = get_mgrid([self.H, self.W, self.num_frames])
+        if train_homography:
+            self.coords = get_mgrid([self.H, self.W, self.num_frames])
+        else:
+            segment = os.listdir(path)
+            segment.sort()
+            img_start = segment[0]
+            img_end = segment[-1]
+            img_start = int(img_start.lstrip('0').split('.')[0])
+            img_end = int(img_end.lstrip('0').split('.')[0])
+            self.coords = get_mgrid([self.H, self.W, self.num_frames], t_crop=[img_start, img_end])
 
         shuffle = torch.randperm(len(self.pixels))
         self.pixels = self.pixels[shuffle]
@@ -94,9 +107,17 @@ class TestVideoFitting(Dataset):
             self.transform = transform
 
         self.video = self.get_video_tensor()
-        self.num_frames, _, self.H, self.W = self.video.size()
+        _, _, self.H, self.W = self.video.size()
+        scene_name = path.split('/')[1]
+        self.num_frames = len(os.listdir("data/%s/%s_all"%(scene_name, scene_name)))
         self.pixels = self.video.permute(2, 3, 0, 1).contiguous().view(-1, 3)
-        self.coords = get_mgrid([self.H, self.W, self.num_frames])
+        segment = os.listdir(path)
+        segment.sort()
+        img_start = segment[0]
+        img_end = segment[-1]
+        img_start = int(img_start.lstrip('0').split('.')[0])
+        img_end = int(img_end.lstrip('0').split('.')[0])
+        self.coords = get_mgrid([self.H, self.W, self.num_frames], t_crop=[img_start, img_end])
 
     def get_video_tensor(self):
         frames = sorted(os.listdir(self.path))

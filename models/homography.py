@@ -21,7 +21,7 @@ def train_homography(path, total_steps, verbose=True, steps_til_summary=100):
         ToTensor(),
         Normalize(torch.Tensor([0.5, 0.5, 0.5]), torch.Tensor([0.5, 0.5, 0.5]))
     ])
-    v = VideoFitting(path, transform)
+    v = VideoFitting(path, transform, True)
     videoloader = DataLoader(v, batch_size=1, pin_memory=True, num_workers=0)
 
     g = Homography(hidden_features=256, hidden_layers=2)
