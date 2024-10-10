@@ -37,8 +37,6 @@ def get_canonical(canonical, step, output_dir):
     return canonical
 
 def train_residual_flow(path, total_steps, lambda_flow=0.02, verbose=True, steps_til_summary=100):
-    global pipe, output_dir, generator
-
     transform = Compose([
         Resize(512),
         ToTensor(),
