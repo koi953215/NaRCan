@@ -118,7 +118,10 @@ class TestVideoFitting(Dataset):
         segment.sort()
         img_start = segment[0]
         img_end = segment[-1]
-        img_start = int(img_start.lstrip('0').split('.')[0])
+        if img_start.lstrip('0').split('.')[0] == '':
+            img_start = 0
+        else:
+            img_start = int(img_start.lstrip('0').split('.')[0])
         img_end = int(img_end.lstrip('0').split('.')[0])
         self.coords = get_mgrid([self.H, self.W, self.num_frames], t_crop=[img_start, img_end])
 
