@@ -89,7 +89,7 @@ def train_residual_flow(path, total_steps, lambda_flow=0.02, verbose=True, steps
 
         loss_dm = 0
         # start to join diffusion prior
-        if step >= 1000:
+        if step >= 200000:
             xy_c = get_mgrid([512, 512], [cx_min, cy_min], [cx_max, cy_max]).to(device1)
             o_c = f(xy_c)
             # o_c shape: (C, H, W)

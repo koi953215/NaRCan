@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, ToTensor, Normalize, Resize
 
 from model import Siren, Homography
-from util import get_mgrid, apply_homography, jacobian, VideoFitting
+from utils.util import get_mgrid, apply_homography, jacobian, VideoFitting
 
 
 def train_homography(path, total_steps, verbose=True, steps_til_summary=100):
