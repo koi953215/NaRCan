@@ -145,13 +145,16 @@ python test.py -n <your-scene-name>
 **If you are not using Separated NaRCan (meaning you only have one canonical image), please skip the grid trick steps.**
 
 The canonical image will be stored in the `output/<your-scene-name>/separate_n/original_canonical`. At this point, if there are multiple canonical images, we need to use the [grid trick](https://arxiv.org/abs/2312.04524) technique to ensure our edited canonical images maintain sufficient consistency after style transfer.  
+  
 First, we need to combine multiple canonical images into a single grid
 
 ```
 python make_grid.py -n <your-scene-name>
 ```
 
-After obtaining the `merge_canonical.png` through the above steps, use your preferred text prompts to transfer it using ControlNet. Once you have the transferred canonical image, place it in `output/<your-scene-name>/separate_n/edited_canonical` (Please note that the file name still needs to be maintained as `merge_canonical.png`). Finally, please execute the following command
+After obtaining the `merge_canonical.png` through the above steps, use your preferred text prompts to transfer it using ControlNet. Once you have the transferred canonical image, place it in `output/<your-scene-name>/separate_n/edited_canonical` (Please note that the file name still needs to be maintained as `merge_canonical.png`).  
+    
+Finally, please execute the following command
 
 ```
 python split_grid.py -n <your-scene-name>
