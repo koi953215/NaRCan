@@ -172,10 +172,10 @@ Please cite us if our work is useful for your research.
 
 ```
 @article{chen2024narcan,
-    title={NaRCan: Natural Refined Canonical Image with Integration of Diffusion Prior for Video Editing},
-    author={Ting-Hsuan Chen and Jiewen Chan and Hau-Shiang Shiu and Shih-Han Yen and Chang-Han Yeh and Yu-Lun Liu},
-    journal={arXiv},
-    year={2024}
+  title={NaRCan: Natural Refined Canonical Image with Integration of Diffusion Prior for Video Editing},
+  author={Chen, Ting-Hsuan and Chan, Jiewen and Shiu, Hau-Shiang and Yen, Shih-Han and Yeh, Chang-Han and Liu, Yu-Lun},
+  journal={Advances in Neural Information Processing Systems},
+  year={2024}
 }
 ```
 
