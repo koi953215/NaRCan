@@ -258,3 +258,14 @@ class TestGroupVideoFitting(Dataset):
         if idx > 0: raise IndexError
             
         return self.coords, self.pixels, self.mask_pixels, self.back_mask_pixels
+    
+
+def read_specific_lines_in_order(file_path, line_numbers=[2, 3]):
+    specific_lines = {}
+    with open(file_path, 'r') as file:
+        for line_number, line in enumerate(file, 1):
+            if line_number in line_numbers:
+                specific_lines[line_number] = line.strip()
+    
+    specific_lines_sorted = [specific_lines[line_number] for line_number in sorted(specific_lines)]
+    return specific_lines_sorted

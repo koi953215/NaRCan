@@ -9,11 +9,11 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, ToTensor, Normalize, Resize
 
 from models.model import Homography, Siren
-from utils.util import apply_homography, TestVideoFitting, get_mgrid
+from utils.util import apply_homography, TestVideoFitting, get_mgrid, read_specific_lines_in_order
 from utils.linear_interpolation import linear_interpolate
 
 
-def reconstruct_frames(name, sep, g_old, data_path, output_path):
+def reconstruct_frames(name, sep, g_old, data_path, output_path, save_canonical=False):
     pth_path = os.path.join(output_path, "pth_file")
     
     f_path = os.path.join(pth_path, f"mlp_f{sep}.pth")
@@ -65,16 +65,21 @@ def reconstruct_frames(name, sep, g_old, data_path, output_path):
             else:
                 myoutput = torch.cat([myoutput, o])
                 
-        # Save Canonical Images
-        # canonical_path = os.path.join(output_path, "original_canonical")
-        # os.makedirs(canonical_path, exist_ok=True)
-        # with torch.no_grad():
-        #     xy = get_mgrid([H, W], [-1.5, -2.0], [1.5, 2.0]).cuda()
-        #     output = f(xy)
-        #     output = output.view(H, W, 3).cpu().detach().numpy()
-        #     output = np.clip(output, -1, 1) * 0.5 + 0.5
-        #     output = Image.fromarray(np.uint8(output * 255))
-        #     output.save(os.path.join(canonical_path, f"canonical_{sep}.png"))
+        if save_canonical:
+            # Save Canonical Images
+            canonical_path = os.path.join(output_path, "original_canonical")
+            os.makedirs(canonical_path, exist_ok=True)
+            
+            scale_factor = read_specific_lines_in_order(
+                os.path.join(output_path, f"canonical_region.txt"))
+            scale_factor = list(map(float, scale_factor))
+            with torch.no_grad():
+                xy = get_mgrid([512, 1024], [-scale_factor[0], -scale_factor[1]], [scale_factor[0], scale_factor[1]]).cuda()
+                output = f(xy)
+                output = output.view(512, 1024, 3).cpu().detach().numpy()
+                output = np.clip(output, -1, 1) * 0.5 + 0.5
+                output = Image.fromarray(np.uint8(output * 255))
+                output.save(os.path.join(canonical_path, f"canonical_{sep}.png"))
 
     # Reconstruction
     reconstruction_path = os.path.join(output_path, "reconstruction", f"{name}_{sep}")
@@ -88,7 +93,7 @@ def reconstruct_frames(name, sep, g_old, data_path, output_path):
         img.save(os.path.join(reconstruction_path, filenames[k]))
         
   
-def test(scene_name, separate_num):
+def test(scene_name, separate_num, save_canonical):
     data_path = os.path.join("data", scene_name, f"separate_{separate_num}")
     output_path = os.path.join("output", scene_name, f"separate_{separate_num}")
     
@@ -98,7 +103,7 @@ def test(scene_name, separate_num):
     g_old.eval()
     
     for sep in range(1, separate_num + 1):        
-        reconstruct_frames(scene_name, sep, g_old, data_path, output_path)
+        reconstruct_frames(scene_name, sep, g_old, data_path, output_path, save_canonical)
         
     reconstruction_path = os.path.join(output_path, "reconstruction")
     linear_interpolate(scene_name, reconstruction_path, reconstruction_path, separate_num, save_video=True)
@@ -108,9 +113,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--name', '-n', type=str, required=True, help='scene_name')
     parser.add_argument('--separate_num', '-sn', type=int, default=3, help='Number of separations.')
-    # parser.add_argument('--H', type=int, default=512)
-    # parser.add_argument('--W', type=int, default=1024)
+    parser.add_argument('--save_canonical', action="store_true")
     
     args = parser.parse_args()
     
-    test(args.name, args.separate_num)
+    test(args.name, args.separate_num, args.save_canonical)
