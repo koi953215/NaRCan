@@ -1,6 +1,6 @@
 export MODEL_NAME="stabilityai/stable-diffusion-2-inpainting"
 export TRAIN_DIR="data/bear"
-export OUTPUT_DIR="pth_file/bear-model-test"
+export OUTPUT_DIR="pth_file/bear-model"
 
 accelerate launch train_realfill.py \
   --pretrained_model_name_or_path=$MODEL_NAME \

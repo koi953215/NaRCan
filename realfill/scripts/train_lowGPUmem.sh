@@ -1,6 +1,6 @@
 export MODEL_NAME="stabilityai/stable-diffusion-2-inpainting"
 export TRAIN_DIR="data/flowerwoman"
-export OUTPUT_DIR="flowerwoman-model"
+export OUTPUT_DIR="pth_file/flowerwoman-model"
 
 accelerate launch train_realfill.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
