@@ -152,7 +152,9 @@ First, we need to combine multiple canonical images into a single grid
 python make_grid.py -n <your-scene-name>
 ```
 
-After obtaining the `merge_canonical.png` through the above steps, use your preferred text prompts to transfer it using ControlNet. Once you have the transferred canonical image, place it in `output/<your-scene-name>/separate_n/edited_canonical` (Please note that the file name still needs to be maintained as `merge_canonical.png`).  
+After obtaining the `merge_canonical.png` through the above steps, use your preferred text prompts to transfer it using [ControlNet](https://github.com/lllyasviel/ControlNet).  
+  
+Once you have the transferred canonical image, place it in `output/<your-scene-name>/separate_<n>/edited_canonical` (Please note that the file name still needs to be maintained as `merge_canonical.png`).  
     
 Finally, please execute the following command
 
