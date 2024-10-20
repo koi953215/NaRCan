@@ -58,7 +58,7 @@ def train_homography(path, total_steps, verbose=True, steps_til_summary=100):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--name', '-n', type=str, required=True, help="your scene name")
-    parser.add_argument('--separate_num', '-sn', type=str, default='1', required=False)
+    parser.add_argument('--separate_num', '-sn', type=str, default='3', required=False)
     args = parser.parse_args()
 
     name = args.name

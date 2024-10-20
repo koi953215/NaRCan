@@ -25,7 +25,10 @@ def copy_files_with_overlap(args):
         to_path_complete = os.path.join(to_path, f"{args.name}_{segment}")
         os.makedirs(to_path_complete, exist_ok=True)
 
-        if segment == 1:
+        if args.separate_num == 1:
+            start_idx = 0
+            end_idx = data_len
+        elif segment == 1:
             start_idx = 0
             end_idx = n_segment + (args.overlap_num // 2 + args.overlap_num % 2)
         elif segment == args.separate_num:

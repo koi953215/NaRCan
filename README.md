@@ -107,15 +107,59 @@ bash scripts/test.sh
 
 ## <a name="Train"></a>Train a new model
 
+Now please return to the main `NaRCan` directory and organize your dataset using the following folder structure.
 
+```
+data
+└─── <your-scene-name>
+    └─── <your-scene-name>_all
+         └─── [your video frames]
+```
+
+The following command will help you complete data preprocessing
+
+```
+python create_separation.py -n <your-scene-name>
+```
+
+Start training the model
+
+```
+python models/homography.py -n <your-scene-name>
+```
+
+```
+python train.py -n <your-scene-name> -dp <diffusion-path>
+```
 
 ## <a name="Test"></a>Test reconstruction
 
-We provide some examples of inference commands; for additional arguments, please refer to [inference.py](inference.py).
+If you want to view the reconstruction results, please use the following command
+
+```
+python test.py -n <your-scene-name>
+```
 
 ## Test video translation
 
-After obtaining the canonical image through this step, use your preferred text prompts to transfer it using ControlNet. Once you have the transferred canonical image, place it in all_sequences/${NAME}/${EXP_NAME}_control (i.e. CANONICAL_DIR in scripts/test_canonical.sh).
+**If you are not using Separated NaRCan (meaning you only have one canonical image), please skip the grid trick steps.**
+
+The canonical image will be stored in the `output/<your-scene-name>/separate_n/original_canonical`. At this point, if there are multiple canonical images, we need to use the [grid trick](https://arxiv.org/abs/2312.04524) technique to ensure our edited canonical images maintain sufficient consistency after style transfer.
+First, we need to combine multiple canonical images into a single grid
+
+```
+python make_grid.py -n <your-scene-name>
+```
+
+After obtaining the `merge_canonical.png` through the above steps, use your preferred text prompts to transfer it using ControlNet. Once you have the transferred canonical image, place it in `output/<your-scene-name>/separate_n/edited_canonical` (Please note that the file name still needs to be maintained as `merge_canonical.png`). Finally, please execute the following command
+
+```
+python split_grid.py -n <your-scene-name>
+```
+
+```
+python test_canonical.py -n <your-scene-name>
+```
 
 ## Citation
 

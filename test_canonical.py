@@ -111,7 +111,7 @@ def test(name, separate_num):
         
         
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Create separation.")
+    parser = argparse.ArgumentParser()
     parser.add_argument('--name', '-n', type=str, required=True, help='scene_name')
     parser.add_argument('--separate_num', '-sn', type=int, default=3, help='Number of separations.')
     

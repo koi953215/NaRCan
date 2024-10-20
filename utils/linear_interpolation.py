@@ -19,43 +19,45 @@ def read_images_in_folder(img_files, input_path):
 
 def linear_interpolate(name, separation_path, output_path, n_separation, fps=15, save_video=False):
     overlap_path = os.path.join(separation_path, f"{name}_1")
-    next_overlap_path = os.path.join(separation_path, f"{name}_2")
-    prev_last = int(sorted(os.listdir(overlap_path))[-1].split('.')[0])
-    now_first = int(sorted(os.listdir(next_overlap_path))[0].split('.')[0])
-    denominator = prev_last - now_first + 2
-    
     img_files = []
     img_files = read_images_in_folder(img_files, overlap_path)
 
-    for s_ in range(2, n_separation):
-        print(f"=== Overlap {s_-1}-{s_} ===")
-        overlap_path = next_overlap_path
-        next_overlap_path = os.path.join(separation_path, f"{name}_{s_+1}")
-        
-        for i, img_path in enumerate(sorted(os.listdir(overlap_path))):
-            now_idx = int(img_path.split('.')[0])
-            img = read_image(f"{overlap_path}/{img_path}")
-            
-            if now_idx <= prev_last:
-                # print(now_idx, img_path, ((i+1)/denominator), (1 - (i+1)/denominator))
-                blend_images(img_files, img, denominator, i)
-            else:
-                img_files.append(img)
-
+    if n_separation != 1:
+        next_overlap_path = os.path.join(separation_path, f"{name}_2")
         prev_last = int(sorted(os.listdir(overlap_path))[-1].split('.')[0])
         now_first = int(sorted(os.listdir(next_overlap_path))[0].split('.')[0])
         denominator = prev_last - now_first + 2
+        
 
-    # Process last overlap
-    print(f"=== Overlap {n_separation-1}-{n_separation} ===")
-    overlap_path = next_overlap_path
-    for i, img_path in enumerate(sorted(os.listdir(overlap_path))):
-        now_idx = int(img_path.split('.')[0])
-        img = imageio.imread(f"{overlap_path}/{img_path}")
-        if now_idx <= prev_last:
-            blend_images(img_files, img, denominator, i)
-        else:
-            img_files.append(img)
+        for s_ in range(2, n_separation):
+            print(f"=== Overlap {s_-1}-{s_} ===")
+            overlap_path = next_overlap_path
+            next_overlap_path = os.path.join(separation_path, f"{name}_{s_+1}")
+            
+            for i, img_path in enumerate(sorted(os.listdir(overlap_path))):
+                now_idx = int(img_path.split('.')[0])
+                img = read_image(f"{overlap_path}/{img_path}")
+                
+                if now_idx <= prev_last:
+                    # print(now_idx, img_path, ((i+1)/denominator), (1 - (i+1)/denominator))
+                    blend_images(img_files, img, denominator, i)
+                else:
+                    img_files.append(img)
+
+            prev_last = int(sorted(os.listdir(overlap_path))[-1].split('.')[0])
+            now_first = int(sorted(os.listdir(next_overlap_path))[0].split('.')[0])
+            denominator = prev_last - now_first + 2
+
+        # Process last overlap
+        print(f"=== Overlap {n_separation-1}-{n_separation} ===")
+        overlap_path = next_overlap_path
+        for i, img_path in enumerate(sorted(os.listdir(overlap_path))):
+            now_idx = int(img_path.split('.')[0])
+            img = imageio.imread(f"{overlap_path}/{img_path}")
+            if now_idx <= prev_last:
+                blend_images(img_files, img, denominator, i)
+            else:
+                img_files.append(img)
 
     # Save final images
     os.makedirs(output_path, exist_ok=True)
