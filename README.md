@@ -3,7 +3,6 @@
 
 **NeurIPS 2024**
 
-[![GitHub stars](https://img.shields.io/github/stars/koi953215/NaRCan?style=social)](https://github.com/koi953215/NaRCan/stargazers)
 [![_](https://img.shields.io/badge/💊-Project%20Page-orange)](https://koi953215.github.io/NaRCan_page/) 
 [![_](https://img.shields.io/badge/arXiv-2406.06523-b31b1b.svg)](https://arxiv.org/abs/2406.06523) 
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/Koi953215/NaRCan_demo) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=koi953215/NaRCan) 
